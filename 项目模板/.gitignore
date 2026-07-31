@@ -1,0 +1,39 @@
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 临时文件
+*.tmp
+*.temp
+*.log
+*.bak
+
+# 办公软件临时文件
+~$*.doc
+~$*.docx
+~$*.ppt
+~$*.pptx
+~$*.xls
+~$*.xlsx
+
+# 大文件（超过100MB的不要提交）
+*.zip
+*.rar
+*.7z
+*.iso
+*.mp4
+*.mov
+*.avi
+
+# 密码/密钥（绝对不能提交）
+*.key
+*.pem
+*.p12
+passwords.txt
+secrets.txt
+
+# AI生成的临时文件
+*.tmp.md
+*_草稿.*
+*_临时.*

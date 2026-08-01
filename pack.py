@@ -5,10 +5,10 @@
 方便投喂给豆包网页版 / Kimi 网页版等只能粘贴的平台。
 
 用法：
-    python pack.py 00 01 05        按编号合并 00、01、05 三个文件
-    python pack.py 00 02 README    也支持 README / PLATFORMS
-    python pack.py 00 01 --no-clip 只生成文件，不复制剪贴板
-    python pack.py                 不带参数 = 列出所有可选编号
+    python pack.py 1-01 1-02 1-05      按编号合并 1-01、1-02、1-05 三个文件
+    python pack.py 1-01 1-03 README    也支持 README / PLATFORMS
+    python pack.py 1-01 1-02 --no-clip 只生成文件，不复制剪贴板
+    python pack.py                     不带参数 = 列出所有可选编号
 """
 import datetime
 import glob
@@ -56,7 +56,7 @@ def main():
         print("可选文件编号：")
         for code, name, _ in items:
             print(f"  {code:<10} {name}")
-        print("\n用法: python pack.py 00 01 05 [--no-clip]")
+        print("\n用法: python pack.py 1-01 1-02 1-05 [--no-clip]")
         return
 
     parts, missing = [], []

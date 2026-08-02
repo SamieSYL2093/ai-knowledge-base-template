@@ -4,3 +4,7 @@ Thumbs.db
 _迁移方案-层-序号编号.md
 
 .git_backup/
+
+# 指挥中心 HTML 是可重生成投影，不进模板仓（见 _源映射与同步说明.md 第5条）
+指挥中心.html
+指挥中心.html.bak

@@ -1,4 +1,4 @@
-﻿---
+---
 slug: ai-kb-template
 displayName: AI 共享知识库模板
 version: 1.0.5

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="540" viewBox="0 0 920 540" font-family="'Segoe UI', 'Microsoft YaHei', Arial, sans-serif">
+  <!-- 标题 -->
+  <text x="460" y="42" text-anchor="middle" font-size="24" font-weight="bold" fill="#1f2328">一图看懂 AI 共享知识库（P13）</text>
+  <text x="460" y="66" text-anchor="middle" font-size="14" fill="#57606a">不是软件、不是插件、不用安装 —— 就是一堆规范文件，你的规矩都写在里面</text>
+
+  <!-- 左：你的资料（input） -->
+  <rect x="40" y="130" width="220" height="200" rx="10" fill="#dbe9f7" stroke="#7ba3c9" stroke-width="1.5"/>
+  <text x="150" y="165" text-anchor="middle" font-size="17" font-weight="bold" fill="#1f3a5f">📥 你的资料</text>
+  <text x="150" y="195" text-anchor="middle" font-size="13" fill="#33506e">文档 / 对话 / SOP / 踩坑</text>
+  <text x="150" y="250" text-anchor="middle" font-size="13" fill="#33506e">拷进对应文件夹</text>
+  <text x="150" y="300" text-anchor="middle" font-size="12" fill="#55728f">聊天记录 → 贴成 Markdown</text>
+
+  <!-- 中：知识库（storage） -->
+  <rect x="330" y="110" width="260" height="240" rx="12" fill="#f6f8fa" stroke="#8b949e" stroke-width="2"/>
+  <text x="460" y="150" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2328">📁 知识库 = 规范文件</text>
+  <line x1="360" y1="165" x2="560" y2="165" stroke="#d0d7de" stroke-width="1"/>
+  <text x="460" y="195" text-anchor="middle" font-size="13" fill="#24292f">1-01 你的档案（你是谁/什么规矩）</text>
+  <text x="460" y="222" text-anchor="middle" font-size="13" fill="#24292f">1-04 AI 介绍信（发给AI就读规则）</text>
+  <text x="460" y="249" text-anchor="middle" font-size="13" fill="#24292f">10-19 业务流程（SOP/模板/案例）</text>
+  <text x="460" y="276" text-anchor="middle" font-size="13" fill="#24292f">20-29 工具技能（手册/踩坑）</text>
+  <text x="460" y="320" text-anchor="middle" font-size="12" fill="#57606a">Git 管版本 · 改了能回滚</text>
+
+  <!-- 右：AI（process） -->
+  <rect x="660" y="130" width="220" height="200" rx="10" fill="#dafbe1" stroke="#4a9d5f" stroke-width="1.5"/>
+  <text x="770" y="165" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a3d24">🤖 你的 AI</text>
+  <text x="770" y="200" text-anchor="middle" font-size="13" fill="#2d5a38">收到介绍信（1-04）</text>
+  <text x="770" y="225" text-anchor="middle" font-size="13" fill="#2d5a38">自动读完所有规则</text>
+  <text x="770" y="290" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3d24">✅ 按你的规矩干活</text>
+  <text x="770" y="315" text-anchor="middle" font-size="12" fill="#4a7a55">换哪个 AI 都一样</text>
+
+  <!-- 箭头：资料→知识库 -->
+  <line x1="262" y1="230" x2="326" y2="230" stroke="#7ba3c9" stroke-width="2.5" fill="none" marker-end="url(#arrow1)"/>
+  <!-- 箭头：知识库→AI -->
+  <line x1="592" y1="230" x2="656" y2="230" stroke="#4a9d5f" stroke-width="2.5" fill="none" marker-end="url(#arrow2)"/>
+
+  <!-- 底部：循环 -->
+  <rect x="40" y="400" width="840" height="90" rx="10" fill="#fff8c5" stroke="#d4a72c" stroke-width="1.5"/>
+  <text x="460" y="435" text-anchor="middle" font-size="15" font-weight="bold" fill="#5c4508">🔄 越用越好用</text>
+  <text x="460" y="462" text-anchor="middle" font-size="13" fill="#6b5a1e">踩了坑 → 写进 20-29 → 所有 AI 都不再踩</text>
+  <text x="460" y="482" text-anchor="middle" font-size="12" fill="#8a742f">经验沉淀在文件里，不依赖任何一家 AI</text>
+
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#7ba3c9"/>
+    </marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#4a9d5f"/>
+    </marker>
+  </defs>
+</svg>

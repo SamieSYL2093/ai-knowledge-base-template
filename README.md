@@ -1,4 +1,4 @@
-<p align="center">
+﻿<p align="center">
   <h1 align="center">🤖 AI 共享知识库模板</h1>
   <p align="center">
     <strong>一套文件规范，让所有 AI 用同一份脑子干活</strong>
@@ -125,7 +125,7 @@ ai-knowledge-base-template/
 │
 └── 项目模板/                  # 📦 新项目模板：新建项目直接复制这个文件夹
     ├── _入项指引.md          # 每个项目自带入项规则，新AI进项目先读这个
-    ├── 00_项目总览.md
+    ├── 00_项目总览模板.md
     └── ...
 ```
 

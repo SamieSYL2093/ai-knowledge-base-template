@@ -1,7 +1,7 @@
 ---
-slug: ai-knowledge-base-template
-displayName: AI 共享知识库模板 — 多AI协作框架
-version: 1.0.2
+slug: ai-kb-template
+displayName: AI 共享知识库模板
+version: 1.0.3
 summary: 开箱即用的多AI协作知识库模板。接入指令、Git署名制、派活对讲机、30条防呆机制——让你同时指挥多个AI干活不打架。MIT协议，下载即用。
 license: MIT
 ---

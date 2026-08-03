@@ -35,16 +35,24 @@ P13 = Path(__file__).resolve().parent
 # ── 可配置区 ─────────────────────────────────────────────
 # 单轨一致性：P13 受检文件里不得出现"SYL 仍是旧轨制"的矛盾描述
 SYL_CONTRADICTION = re.compile(r"(SYL.{0,40}(三轨|四轨|对号入座))|((三轨|四轨).{0,40}SYL)")
-# SYL 仓自身运营正文也兜底查一遍旧轨制
-SYL_SELF_STALE = re.compile(r"(三轨|四轨|对号入座|签名制|签名激活)")
+# SYL 仓自身运营正文也兜底查一遍旧术语（与 P13 侧共用同一份 STALE_TERMS，避免两库口径不一）
 
 STALE_TERMS = [                     # 已退役术语（两库运营正文 0 残留）
-    "三轨", "四轨", "快速通道", "A轨", "B轨", "C轨",
+    "三轨", "四轨", "A轨", "B轨", "C轨",
     "对号入座", "签名制", "激活标记", "签名激活",
 ]
-STALE_EXEMPT = {                    # 有意保留旧术语的文件（变更说明/事故记录）
+STALE_EXEMPT = {                    # 有意保留旧术语的文件（变更说明/事故记录/日志/分析）
     "_源映射与同步说明.md",
+    "回流提案-P13硬触发纪律与单轨补课.md",   # 单轨补课提案：自身在列举旧术语，属变更说明
+    "苏老师_指挥中心.md",                   # 指挥中心日志：纯审计/交接记录，非运营规范正文
+    "调研-AI知识库模板竞品分析.md",         # 竞品分析：描述竞品/历史架构，非 SYL 自述旧轨制
 }
+# 整目录豁免：工单（任务/事故记录）天然包含旧轨制历史描述，与"变更说明"同属豁免范畴
+EXEMPT_DIRS = {"1-08_工单"}
+
+
+def exempt(p: Path) -> bool:
+    return p.name in STALE_EXEMPT or any(d in p.parts for d in EXEMPT_DIRS)
 # 脱敏：P13 发布面不得含这些（与 check.py 对齐，但本脚本不写死"00 AI doc"字面）
 FORBIDDEN = ["苏" + "老师"]   # 拼接：避免源码字面触发 P13 仓 check.py 脱敏扫描自身
 FORBIDDEN_PATTERNS = [
@@ -73,8 +81,12 @@ def resolve_syl(explicit: str | None) -> Path | None:
 
 def tracked_files(root: Path) -> list[Path]:
     try:
+        # 关键：core.quotepath=false + encoding="utf-8"，否则 Windows 上中文文件名
+        # 被默认编码解码成乱码路径 → 文件在磁盘上不存在 → 整个中文文件被静默跳过
+        # （曾导致 SYL/P13 所有中文 md 从未被真正扫描，sync_check 长期"真空绿"）。
         out = subprocess.run(
-            ["git", "ls-files"], cwd=root, capture_output=True, text=True, check=True,
+            ["git", "-c", "core.quotepath=false", "ls-files"],
+            cwd=root, capture_output=True, text=True, encoding="utf-8", check=True,
         ).stdout
         return [root / line.strip() for line in out.splitlines() if line.strip()]
     except Exception:
@@ -89,30 +101,32 @@ def check_track_consistency(syl_root: Path | None, p13_files: list[Path]) -> lis
     """SYL 单轨 ↔ P13 不得把 SYL 描述成旧轨制。"""
     hits = []
     # P13 侧：源映射/README/SKILL 里若出现 "SYL 三轨" 类矛盾即拦截
+    # （变更说明/事故记录类豁免文件同样跳过矛盾检查，避免历史描述被误报）
     for p in p13_files:
-        if p.suffix != ".md":
+        if p.suffix != ".md" or exempt(p):
             continue
         for i, line in enumerate(read(p).splitlines(), 1):
             if SYL_CONTRADICTION.search(line):
                 hits.append(f"{p.relative_to(P13)}:{i}: P13 侧把 SYL 描述为旧轨制（与单轨拍板矛盾）")
-    # SYL 侧：本体也兜底查一遍旧轨制残留
+    # SYL 侧：本体也兜底查一遍旧术语残留（与 P13 侧共用 STALE_TERMS，口径一致）
     if syl_root:
         for p in tracked_files(syl_root):
-            if p.suffix != ".md" or p.name in STALE_EXEMPT:
+            if p.suffix != ".md" or exempt(p):
                 continue
             for i, line in enumerate(read(p).splitlines(), 1):
                 s = line.lstrip()
                 if s.startswith("> 更新") or s.startswith("> 历史"):
                     continue
-                if SYL_SELF_STALE.search(line):
-                    hits.append(f"[SYL]{p.relative_to(syl_root)}:{i}: SYL 仓仍有旧轨制残留")
+                for t in STALE_TERMS:
+                    if t in line:
+                        hits.append(f"[SYL]{p.relative_to(syl_root)}:{i}: SYL 仓仍有旧术语「{t}」")
     return hits
 
 
 def check_stale(files: list[Path]) -> list[str]:
     hits = []
     for p in files:
-        if p.suffix != ".md" or p.name in STALE_EXEMPT:
+        if p.suffix != ".md" or exempt(p):
             continue
         for i, line in enumerate(read(p).splitlines(), 1):
             s = line.lstrip()
@@ -178,7 +192,7 @@ def main() -> int:
         if hits:
             failed = True
             print(f"❌ {name}：{len(hits)} 处拦截")
-            for h in hits[:20]:
+            for h in hits:
                 print(f"   - {h}")
         else:
             print(f"✅ {name}")

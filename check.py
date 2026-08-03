@@ -32,16 +32,16 @@ FORBIDDEN_PATTERNS = [              # 脱敏正则（内部绝对路径等）
     r"[A-Za-z]:\\Users\\",
     r"00 AI doc",
     r"00 Customer Files",
+    r"\bSYL\b",                      # 内部短码（知识库私有仓标识）
 ]
 STALE_TERMS = [                     # 已退役术语（运营正文 0 残留）
     "三轨", "四轨", "快速通道", "A轨", "B轨", "C轨",
     "对号入座", "签名制", "激活标记", "签名激活",
 ]
 STALE_EXEMPT = {                    # 有意保留旧术语的文件（变更说明/事故记录）
-    "_源映射与同步说明.md",
 }
 HEADER_EXEMPT = {                   # 不参与文件头三行检查（人窗口/维护者文件）
-    "README.md", "SKILL.md", "_push前检查清单.md", "_源映射与同步说明.md",
+    "README.md", "SKILL.md", "_push前检查清单.md",
 }
 SCAN_EXEMPT = {                     # 不参与脱敏扫描（本身在讲脱敏规则/词表）
     "_push前检查清单.md", "check.py", "sync_check.py",

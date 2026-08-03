@@ -2,6 +2,7 @@ _打包/
 .DS_Store
 Thumbs.db
 _迁移方案-层-序号编号.md
+_源映射与同步说明.md
 
 .git_backup/
 

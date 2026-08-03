@@ -17,6 +17,11 @@ import subprocess
 import sys
 from pathlib import Path
 
+# Windows GBK 控制台兼容：不设 UTF-8 时打印 ✅/❌ 会崩，导致机器闸在本地跑不起来
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 ROOT = Path(__file__).resolve().parent
 
 # ── 可配置区 ─────────────────────────────────────────────

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 check.py — 发布 / 跨库同步前四合一检查（全绿才发）
 
@@ -44,7 +44,7 @@ HEADER_EXEMPT = {                   # 不参与文件头三行检查（人窗口
     "README.md", "SKILL.md", "_push前检查清单.md", "_源映射与同步说明.md",
 }
 SCAN_EXEMPT = {                     # 不参与脱敏扫描（本身在讲脱敏规则/词表）
-    "_push前检查清单.md", "check.py",
+    "_push前检查清单.md", "check.py", "sync_check.py",
 }
 HEADER_SKIP_DIRS = {"项目模板"}      # 占位模板目录不查文件头
 # ──────────────────────────────────────────────────────────

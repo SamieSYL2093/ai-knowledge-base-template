@@ -8,6 +8,7 @@ check.py — 发布 / 跨库同步前四合一检查（全绿才发）
   2. 版本一致性  —— SKILL.md front matter version ↔ README.md 版本节
   3. 旧术语残留  —— 已退役机制术语不得出现在运营正文（"> 更新 / > 历史"行豁免）
   4. 文件头三行  —— 每个 .md 头部须有 用途 / 关键词 / 更新（豁免见 HEADER_EXEMPT）
+  5. commit消息脱敏 —— git log 全历史消息含内部词即拒（2026-08-04 苏老师发现公开仓 commit 消息泄露内部 AI 署名/SYL/真实路径后新增）
 
 只检查 git 跟踪的文件（未跟踪的本地维护文件不属于发布面）。
 用法：python check.py   退出码 0=全绿，1=有拦截项
@@ -40,6 +41,12 @@ STALE_TERMS = [                     # 已退役术语（运营正文 0 残留）
 ]
 STALE_EXEMPT = {                    # 有意保留旧术语的文件（变更说明/事故记录）
 }
+# commit 消息禁词：与 FORBIDDEN 同源 + 内部 AI 署名前缀 + 内部短码（2026-08-04 新增）
+COMMIT_FORBIDDEN = [
+    "苏老师", "小龙虾", "大龙虾", "WorkBuddy", "OpenSquilla",
+    "KimiCodeCLI", "豆包桌面端", "千问办公", "QoderWork", "Hermes",
+    "SYL", "华晔", "00 AI doc", "auto_publish", "登录态",
+]
 HEADER_EXEMPT = {                   # 不参与文件头三行检查（人窗口/维护者文件）
     "README.md", "SKILL.md", "_push前检查清单.md",
 }
@@ -123,6 +130,25 @@ def check_headers(files) -> list[str]:
     return hits
 
 
+def check_commit_messages() -> list[str]:
+    """扫描 git log 全历史 commit 消息，含内部词即拒（2026-08-04 新增）。"""
+    try:
+        out = subprocess.run(
+            ["git", "log", "--format=%s"], cwd=ROOT, capture_output=True, check=True,
+        ).stdout.decode("utf-8", errors="replace")
+    except Exception:
+        return ["无法读取 git log（本机无 git 或非仓库）"]
+    hits = []
+    for line in out.splitlines():
+        if not line.strip():
+            continue
+        for w in COMMIT_FORBIDDEN:
+            if w in line:
+                hits.append(f"commit 消息含内部词「{w}」：{line[:80]}")
+                break
+    return hits
+
+
 def main() -> int:
     files = tracked_files()
     results = {
@@ -130,6 +156,7 @@ def main() -> int:
         "2.版本一致性": check_version(files),
         "3.旧术语残留": check_stale(files),
         "4.文件头三行": check_headers(files),
+        "5.commit消息脱敏": check_commit_messages(),
     }
     failed = False
     for name, hits in results.items():

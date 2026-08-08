@@ -4,13 +4,10 @@
 
 适用：本模板仓（ai-knowledge-base-template）的使用者。
 做法：
-  1. 复制 1-08_指挥中心模板.md → 指挥中心.md，把【】占位符换成你的内容
-  2. （可选）在 1-01_用户档案.md 的「我的 AI 工具」章节维护 AI 能力表，会自动带进 HTML
+  1. 把 指挥中心.md 里的【】占位符换成你的内容（可让 AI 代劳）
+  2. （可选）在 1-01_档案.md 加一节「## 我的 AI 工具」表格，会自动带进 HTML
   3. 跑本脚本：python gen_html.py → 生成 指挥中心.html（与脚本同目录，可在浏览器设书签）
 严禁手改 HTML——手改内容会被下次生成覆盖。
-
-说明：本文件是作者内部仓 gen_html.py 的「通用化脱敏版」（内部实例名已替换为通用名，
-生成逻辑不变）。同步时只做此脱敏，不改生成逻辑。
 """
 import re, shutil, sys
 from pathlib import Path
@@ -21,10 +18,10 @@ MD_FILE = KB / "指挥中心.md"
 # HTML 输出到知识库根目录（与 gen_html.py、指挥中心.md 同级）——这是你的总入口，在库里随手可开
 # 唯一事实来源仍是 指挥中心.md；HTML 是可重新生成的投影，不进 git（见 .gitignore）
 HTML_FILE = KB / "指挥中心.html"
-PROFILE_FILE = KB / "1-01_用户档案.md"
+PROFILE_FILE = KB / "1-01_档案.md"
 
 def extract_matrix():
-    """从 1-01 用户档案提取「我的 AI 工具」一节的表格行。
+    """从 1-01 档案提取「我的 AI 工具」一节的表格行（无此节则跳过）。
     矩阵唯一维护点在 1-01，这里只是读取投影到 HTML，不复制维护。"""
     if not PROFILE_FILE.exists():
         return ""
@@ -200,15 +197,15 @@ color:#888;font-size:14px;line-height:1.8;}
 def main():
     check_only = "--check" in sys.argv
     if not MD_FILE.exists():
-        print(f"❌ 找不到 {MD_FILE.name}：请先复制 1-08_指挥中心模板.md 为 指挥中心.md 并填写【】占位符")
+        print(f"❌ 找不到 {MD_FILE.name}：请先填写仓库自带的 指挥中心.md（【】占位符换成你的内容）")
         sys.exit(1)
     md = MD_FILE.read_text(encoding="utf-8")
 
-    # 自动带入 1-01 用户档案的「我的 AI 工具」矩阵（投影展示，维护点仍在 1-01）
+    # 自动带入 1-01 档案的「我的 AI 工具」矩阵（投影展示，维护点仍在 1-01；无此节则跳过）
     matrix = extract_matrix()
     if matrix:
-        md += ("\n## 🤖 已入职AI特性矩阵（自动带自 1-01 用户档案）\n"
-               "> 本表由 gen_html.py 从 `1-01_用户档案.md` 自动带入展示——唯一维护点在 1-01，AI能力有变化请改那里，不要改这里。\n"
+        md += ("\n## 🤖 已入职AI特性矩阵（自动带自 1-01 档案）\n"
+               "> 本表由 gen_html.py 从 `1-01_档案.md` 自动带入展示——唯一维护点在 1-01，AI能力有变化请改那里，不要改这里。\n"
                + matrix + "\n")
 
     # MD 头部"更新时间"（日期+分钟，精确到分钟；模板未写则为未知）

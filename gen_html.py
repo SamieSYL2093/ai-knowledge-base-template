@@ -52,7 +52,14 @@ def extract_projects():
             if any("示例" in c for c in cells):
                 continue  # 模板示例行不带入
             out.append(ln.rstrip())
-    return "\n".join(out)
+    # 数据行 = 分隔行之后的行；一个都没有则返回空，避免渲染出空表格占位
+    sep = -1
+    for i, ln in enumerate(out):
+        if not ln.strip().strip("|").replace("|", "").replace("-", "").replace(":", "").strip():
+            sep = i
+            break
+    rows = out[sep + 1:] if sep >= 0 else out[1:]
+    return "\n".join(out) if rows else ""
 
 def check_scores(md):
     """积分榜对账（仅当 MD 含「### 当前总分」时启用，避免无此小节时误报）。

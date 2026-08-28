@@ -15,6 +15,7 @@ lint.py — 知识库模板体检脚本
   R4 示例行残留          已有实际签名/项目，但表里还留着【示例：…】没删
   R5 敏感信息            MD 里出现绝对路径（如 D:\…）——对外发布前必看，防泄露
   R6 commit 消息泄露     git log 消息里含绝对路径
+  R7 原则条数不同步      档案改了原则条数，README/SKILL.md 里的"N 条"没跟着改
 """
 
 import re
@@ -93,6 +94,15 @@ def check():
                 errors.append(f"R6 commit 消息含绝对路径: {line[:60]}")
     except Exception:
         infos.append("R6 跳过（无 git 环境）")
+
+    # R7 原则条数一致性（档案是唯一事实源，别处提"N 条"必须跟着走）
+    m = re.search(r"这\s*(\d+)\s*条是模板预置", profile)
+    if m:
+        n = m.group(1)
+        for f in ("README.md", "SKILL.md"):
+            for m2 in re.finditer(r"(\d+)\s*条基本原则", read(f)):
+                if m2.group(1) != n:
+                    errors.append(f"R7 {f} 写「{m2.group(1)} 条基本原则」，档案实为 {n} 条——改档案后记得同步")
 
 
 def main():

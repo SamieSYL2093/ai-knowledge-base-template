@@ -19,6 +19,7 @@ MD_FILE = KB / "指挥中心.md"
 # 唯一事实来源仍是 指挥中心.md；HTML 是可重新生成的投影，不进 git（见 .gitignore）
 HTML_FILE = KB / "指挥中心.html"
 PROFILE_FILE = KB / "1-01_档案.md"
+PROJECT_FILE = KB / "3-01_项目清单.md"
 
 def extract_matrix():
     """从 1-01 档案提取「我的 AI 工具」一节的表格行（无此节则跳过）。
@@ -32,6 +33,24 @@ def extract_matrix():
             grab = ln.startswith("## 我的 AI 工具")
             continue
         if grab and ln.strip().startswith("|"):
+            out.append(ln.rstrip())
+    return "\n".join(out)
+
+def extract_projects():
+    """从 3-01 项目清单提取表格行（自动带入 HTML，唯一维护点在 3-01）。
+    指挥中心不再手写项目状态，避免与 3-01 双维护不一致。"""
+    if not PROJECT_FILE.exists():
+        return ""
+    lines = PROJECT_FILE.read_text(encoding="utf-8").split("\n")
+    out, grab = [], False
+    for ln in lines:
+        if ln.startswith("## "):
+            grab = ln.startswith("## 项目清单")
+            continue
+        if grab and ln.strip().startswith("|"):
+            cells = [c.strip() for c in ln.strip().strip("|").split("|")]
+            if any("示例" in c for c in cells):
+                continue  # 模板示例行不带入
             out.append(ln.rstrip())
     return "\n".join(out)
 
@@ -207,6 +226,13 @@ def main():
         md += ("\n## 🤖 已入职AI特性矩阵（自动带自 1-01 档案）\n"
                "> 本表由 gen_html.py 从 `1-01_档案.md` 自动带入展示——唯一维护点在 1-01，AI能力有变化请改那里，不要改这里。\n"
                + matrix + "\n")
+
+    # 自动带入 3-01 的项目表（项目状态唯一维护点在 3-01，指挥中心不手写）
+    projects = extract_projects()
+    if projects:
+        md += ("\n## 📁 项目状态速览（自动带自 3-01 项目清单）\n"
+               "> 本表由 gen_html.py 从 `3-01_项目清单.md` 自动带入——项目增减/状态变化请改 3-01，不要改指挥中心。\n"
+               + projects + "\n")
 
     # MD 头部"更新时间"（日期+分钟，精确到分钟；模板未写则为未知）
     m = re.search(r'>\s*更新时间?：\s*([0-9]{4}-[0-9]{2}-[0-9]{2})(?:\s+([0-9]{2}:[0-9]{2}))?', md)

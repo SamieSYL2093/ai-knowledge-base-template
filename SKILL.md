@@ -1,7 +1,7 @@
 ---
 slug: ai-kb-template
 displayName: AI 共享知识库模板
-version: 2.0.0
+version: 2.1.0
 summary: 多AI协作知识库模板：整理散乱文件夹和项目，AI建Git自动留痕，一份档案+两张登记表让所有AI用同一份脑子干活。MIT协议，下载即用。
 license: MIT
 ---
@@ -38,7 +38,8 @@ license: MIT
 ```
 知识库/
 ├── README.md            # 人唯一要读的：两步上手 + AI 入职节
-├── 1-01_档案.md         # 身份 + 10 条基本原则 + AI 签名登记表
+├── 1-01_档案.md         # 身份 + 12 条基本原则 + AI 签名登记表
+├── AGENTS.md            # AI 开工须知（Claude Code/Cursor 等工具会自动读）
 ├── 3-01_项目清单.md     # 所有项目在哪、什么状态
 ├── 3-02_技能清单.md     # 各平台装过什么 skill
 ├── 指挥中心.md          # 仪表盘源文件（AI 维护）

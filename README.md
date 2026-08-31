@@ -17,12 +17,13 @@
   <img src="https://img.shields.io/badge/Markdown-✓-blue?style=flat-square" alt="Markdown">
   <img src="https://img.shields.io/badge/AI%20Platforms-All-brightgreen?style=flat-square" alt="AI Platforms">
   <br/>
-  <img src="https://img.shields.io/badge/%E5%85%AD%E7%BB%B4%E8%87%AA%E8%AF%84-80%2F100%20(%E7%9F%AD%E6%9D%BF%3A%E4%B8%8D%E8%BF%87%E6%9C%9F)-orange?style=flat-square" alt="六维自评">
+  <img src="https://img.shields.io/badge/%E5%85%AD%E7%BB%B4%E8%87%AA%E8%AF%84-76/100%20%28%E7%9F%AD%E6%9D%BF%3A%E5%8D%95%E4%B8%80%E6%BA%90%29-orange?style=flat-square" alt="六维自评">
 </p>
 
 ---
 
-> 📊 **本模板六维自评：80 分（短板：不过期）**。复跑：`python scripts/kb_audit.py .`——六维体检（单一源/放对层/可找到/不过期/不冗余/可执行），总分取短板，只报不修。
+> 📊 **本模板六维自评：76 分（短板：单一源）**。复跑：`python scripts/kb_audit.py .`——六维体检（单一源/放对层/可找到/不过期/不冗余/可执行），总分取短板，只报不修。
+> （08-31 注：README 自评行本身会命中"单一源"检查的关键词——分数含自证代价，如实记录不凑分。）
 
 ## 为什么需要这个
 

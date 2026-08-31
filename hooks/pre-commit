@@ -2,10 +2,14 @@
 # P13 提交前双闸（2026-08-31，WBS 1.2）：① UTF-8 防呆 ② lint.py 机检 R1-R7
 # 安装：copy hooks\pre-commit .git\hooks\pre-commit （新 clone 后执行一次）
 # 背景：UTF-8 闸防 8-23 的 GBK 不可逆腐蚀；lint 闸防模板核心文件被改坏（lint 只报不修，有错即拦）
+# 08-31 修中文名盲区（小龙虾实测发现）：两层根因都修——
+# ① git 默认把中文路径转义成八进制引号串 → 加 -c core.quotePath=false 让中文路径原样输出；
+# ② git 输出是 UTF-8 字节，subprocess text=True 会按系统 GBK 解码成乱码（git show 找不到→假通过）
+#    → 改 .stdout.decode('utf-8') 显式解码（解法参照小企鹅 commit_guard.py）
 python - <<'EOF'
 import subprocess, sys
-files = subprocess.run(['git','diff','--cached','--name-only','--diff-filter=ACM'],
-                       capture_output=True, text=True).stdout.split()
+files = subprocess.run(['git','-c','core.quotePath=false','diff','--cached','--name-only','--diff-filter=ACM'],
+                       capture_output=True).stdout.decode('utf-8').split()
 bad = []
 for f in files:
     if f.lower().endswith(('.md', '.py')):

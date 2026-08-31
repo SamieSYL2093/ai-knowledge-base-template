@@ -1,0 +1,33 @@
+#!/bin/sh
+# P13 提交前双闸（2026-08-31，WBS 1.2）：① UTF-8 防呆 ② lint.py 机检 R1-R7
+# 安装：copy hooks\pre-commit .git\hooks\pre-commit （新 clone 后执行一次）
+# 背景：UTF-8 闸防 8-23 的 GBK 不可逆腐蚀；lint 闸防模板核心文件被改坏（lint 只报不修，有错即拦）
+python - <<'EOF'
+import subprocess, sys
+files = subprocess.run(['git','diff','--cached','--name-only','--diff-filter=ACM'],
+                       capture_output=True, text=True).stdout.split()
+bad = []
+for f in files:
+    if f.lower().endswith(('.md', '.py')):
+        data = subprocess.run(['git', 'show', f':{f}'], capture_output=True).stdout
+        try:
+            data.decode('utf-8')
+        except UnicodeDecodeError:
+            bad.append(f)
+if bad:
+    print('[pre-commit] ① UTF-8 check FAILED (GBK/corrupt write detected):')
+    for f in bad:
+        print('  -', f)
+    print('Fix: rewrite the file as UTF-8 (python open(...,encoding="utf-8")). Do NOT bypass with --no-verify.')
+    sys.exit(1)
+EOF
+rc=$?
+[ $rc -ne 0 ] && exit $rc
+echo "[pre-commit] ② lint.py（R1-R7）"
+python lint.py
+rc=$?
+if [ $rc -ne 0 ]; then
+  echo "[pre-commit] lint 发现必改项（见上方清单），修复后再提交；确要强行提交用 --no-verify（留人为决策痕迹）"
+  exit 1
+fi
+exit 0

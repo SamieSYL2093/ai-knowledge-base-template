@@ -1,6 +1,8 @@
 ---
 slug: ai-kb-template
+name: ai-kb-template
 displayName: AI 共享知识库模板
+description: 多 AI 协作知识库模板：把散乱文件夹/项目整理成结构化 MD 知识库，AI 建 Git 自动留痕，一份档案 + 项目/技能双登记表让所有 AI 共用同一份脑子，内置 lint 与 pre-commit 双闸。当用户要整理散乱资料、建团队共享知识库、给多个 AI 定协作规矩、或需要一个开箱即用的 MD 知识库骨架时使用。
 version: 2.1.1
 summary: 多AI协作知识库模板：整理散乱文件夹和项目，AI建Git自动留痕，一份档案+两张登记表让所有AI用同一份脑子干活。MIT协议，下载即用。
 license: MIT

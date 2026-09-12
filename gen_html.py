@@ -261,7 +261,7 @@ def main():
 <div class="footer">
   🎯 这是<strong>你的专属指挥中心</strong>——你只看这一页就够了，但<strong>最好别看</strong>：直接问任何一个 AI，它都会答<br>
   🤖 本页由 AI 从 <code>指挥中心.md</code> 一键生成，AI 日常只改 MD<br>
-  📁 真想自己翻，本页在 <code>gen_html.py</code> 同目录的 <code>指挥中心.html</code>，可在浏览器设书签；详细数据在知识库其他 MD（给 AI 看的）
+  📁 真想自己翻，本页在 <code>gen_html.py</code> 同目录的 <code>指挥中心.html</code>，可在浏览器设书签；详细数据在知识库其他 MD——<strong>别双击 MD</strong>（会弹记事本，满屏符号看着像坏了），装个 MD 阅读器（如 mdview，开源免费）再看
   <div class="stamp">🕐 更新时间：{md_date} ｜ 本页生成：{datetime.now().strftime("%Y-%m-%d %H:%M")}</div>
 </div>
 </body>

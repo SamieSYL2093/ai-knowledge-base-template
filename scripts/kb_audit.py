@@ -47,14 +47,25 @@ MANUAL_NOTE = {
 OTHER_REPO_HINT = re.compile(r"P\d{2}|见\s|→|→|[/\\][A-Za-z]|仓\b|skill\b")
 
 
+# 变更日志类文件天然记录历史文件名（含已删的），拿"现在存不存在"核它语义不符。
+# 声明四件套——作用域：维度 6 的「文件存在性」检查｜豁免：CHANGELOG*（过去时叙述，
+# 是在记录某文件的历史/删除，不是在宣称本仓有它）｜生效日：2026-09-12（P13 退役
+# HTML 链路，CHANGELOG 记 gen_html.py 被删，`python gen_html.py` 那行即触发假警报）
+# ｜挂载点：check_executable()
+HISTORY_FILE_RE = re.compile(r"^(CHANGELOG|CHANGES|HISTORY)", re.I)
+
+
 def check_executable(root: Path, mds) -> list:
     """维度 6 可执行：正文提到的脚本是不是真存在（宣称即实现）。
 
     排除**跨仓指针**——"去 skill-forge 找 skill_lint.py"不是本仓缺文件。
     不做这层判断，指路牌式的规范会被刷成一片红（实测总仓就这样）。
+    排除**变更日志**——录历史文件名的过去时叙述，见 HISTORY_FILE_RE 声明。
     """
     miss = []
     for p in mds:
+        if HISTORY_FILE_RE.match(p.name):
+            continue
         try:
             text = read(p)
         except Exception:

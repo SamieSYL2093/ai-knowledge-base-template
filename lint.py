@@ -9,7 +9,7 @@ lint.py — 知识库模板体检脚本
 （在本仓根目录跑；无 git 环境时自动跳过 git 相关检查）
 
 规则一览：
-  R1 核心文件齐全        1-01/3-01/3-02/指挥中心.md/gen_html.py 缺一不可
+  R1 核心文件齐全        1-01/3-01/3-02/指挥中心.md 缺一不可
   R2 文件头三行说明      核心 MD 须有 > 用途 / > 关键词 / > 更新
   R3 签名表占位行        1-01 末尾须保留（新AI在此加行）
   R4 示例行残留          已有实际签名/项目，但表里还留着【示例：…】没删
@@ -31,7 +31,7 @@ for _s in (sys.stdout, sys.stderr):
         pass
 
 KB = Path(__file__).parent
-CORE_FILES = ["1-01_档案.md", "3-01_项目清单.md", "3-02_技能清单.md", "指挥中心.md", "gen_html.py"]
+CORE_FILES = ["1-01_档案.md", "3-01_项目清单.md", "3-02_技能清单.md", "指挥中心.md"]
 HEADER_FILES = ["1-01_档案.md", "3-01_项目清单.md", "3-02_技能清单.md", "指挥中心.md"]
 ABS_PATH_RE = re.compile(r"(?<![/\w])[A-Za-z]:[/\\][^\s`），。；]+")
 URL_RE = re.compile(r"https?://\S+")
